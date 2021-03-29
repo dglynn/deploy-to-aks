@@ -1,0 +1,2 @@
+# Ignore yaml files as it breaks helm-template https://github.com/prettier/prettier/issues/6517
+*.yaml

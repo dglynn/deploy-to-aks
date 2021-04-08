@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.todo.name }}
+spec:
+  replicas: {{ .Values.todo.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.todo.name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.todo.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.todo.rollingUpdate.maxSurge }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.todo.name }}
+    spec:
+      containers:
+        - name: {{ .Values.todo.name }}
+          image: {{ .Values.todo.container.image }}
+          imagePullPolicy: {{ .Values.todo.container.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.todo.container.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.todo.resources.requests.cpu }}
+              memory: {{ .Values.todo.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.todo.resources.limits.cpu }}
+              memory: {{ .Values.todo.resources.limits.memory }}

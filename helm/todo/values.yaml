@@ -1,0 +1,32 @@
+todo:
+  name: todo
+  replicas: 3
+  selector:
+    matchLabels:
+      app: todo
+  rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 1
+  resources:
+    requests:
+      cpu: 300m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 20
+    scaleUpCPUUtilizationPercentage: 80
+    scaleDownCPUUtilizationPercentage: 30
+  container:
+    image: dglynn/todo
+    pullPolicy: Always
+    port: 8080
+  service:
+    type: ClusterIP
+    port: 8080
+
+ingress:
+  enabled: true

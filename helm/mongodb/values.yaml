@@ -1,0 +1,11 @@
+replicaCount: 1
+
+mongodb:
+  name: mongodb
+  container:
+    image: dglynn/mongodb
+    pullPolicy: Always
+    port: 27017
+  service:
+    type: ClusterIP
+    port: 27017

@@ -33,9 +33,9 @@ The repo config is setup to use the images in my docker hub. https://hub.docker.
 
 ### Deploy AKS cluster to Azure
 
-To deploy the AKS cluster to your own tenant you first need to `cd aks-cluster` and edit the following files:
+To deploy the AKS cluster to your own tenant you first need to [`cd aks-cluster`](aks-cluster) and edit the following files:
 
-1. From the [variables.tf](aks-cluster/variables.tf) add your tenant and subscription id's:
+1. Edit the [variables.tf](aks-cluster/variables.tf) and add your tenant and subscription id's:
 
    ```
    variable "tenant_id" {
@@ -51,7 +51,7 @@ To deploy the AKS cluster to your own tenant you first need to `cd aks-cluster` 
    }
    ```
 
-1. The next file to edit is the [modules/aks/main.tf](modules/aks/main.tf) and add your `user_principal_name` to this data resource which is used to setup rbac access for the aks admin group in your azure ad:
+1. The next file to edit is the [aks-cluster/modules/aks/main.tf](aks-cluster/modules/aks/main.tf) and add your `user_principal_name` to this data resource which is used to setup rbac access for the aks admin group in your azure ad:
    ```
    data "azuread_user" "aks_rbac_user" {
      user_principal_name = "ADD YOUR UPN HERE FROM AZURE AD"
@@ -69,6 +69,7 @@ To deploy the AKS cluster to your own tenant you first need to `cd aks-cluster` 
 1. There is an example of how to setup a remote backend store for the state file, if you would like to try that. There is some manual steps to carry out in advance first. When you open the [backend.tf](aks-cluster/backend.tf) it has all the necessary information.
 1. When the terraform apply has been completed it will output the aks config and public ip of the cluster:
    - Copy the aks config and run it: `az aks get-credentials --subscription your_sub_id_will_be_here --resource-group todo --name todo --overwrite-existing`
+1. To test access to the cluster, you can run `kubectl gets nodes`, this will prompt you to login using the rbac creds presented to you on the cmd line
 
 ### Deploying the helm apps
 
@@ -86,16 +87,16 @@ Now you are ready to deploy your apps, [`cd helm`](helm) from the root of the re
      - `helm install todo todo`
 1. Once the apps have been installed, you can now copy the public ip from the earlier terraform apply and open your favourite browser and you should land at the apps homepage
 
-### Kubectl and k9s to check the appos after installation
+### Kubectl and k9s to check the pods after installation
 
 You can check some information about the cluster after its built
 
-1. `kubectl get nodes` will show the nodepool
-1. `kubectl get pods` will show the running pods
-1. `kubectl get ingress` will show the todo app ingress
+1. `kubectl get nodes` will show the cluster nodes
+1. `kubectl get pods` will show the running pods in the `default` namespace
+1. `kubectl get ingress` will show the todo app ingress in the `default` namespace
 1. `kubectl get --watch pods` can be run to see the pods come up during the helm installations
-1. `kubectl logs -f todo-uuid_here_of_pod` will show ifd the app started and connected to the db
+1. `kubectl logs -f todo-uuid_here_of_pod` will show the logs for the todo app and it should report started and it connected to the db
+1. The cluster is setup with a minimum of 3 nodes in the default nodepool scaling up to a maximum of 5 nodes. The app itself has scale out settings in the helm [values.yaml](helm/todo/values.yaml) file. The cluster is set to scale the nodes back down once the utilisation drops to 30%. This can be seen from the AKS resource config in the [aks module](aks-cluster/aks/main.tf)
 1. To trigger a scale up and out of the app you can use tools like these:
    - https://loader.io/
    - https://gatling.io/
-1. The cluster is setup with a minimum of 3 nodes in the default nodepool scaling up to a maximum of 5 nodes. The app itself has scale out settings in the helm [values.yaml](helm/todo/values.yaml) file. The cluster is set to scale the nodes back down once the utilisation drops to 30%. This can be seen from the AKS resource config in the [aks module](aks-cluster/aks/main.tf)

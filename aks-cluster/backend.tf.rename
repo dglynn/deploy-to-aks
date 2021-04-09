@@ -1,0 +1,12 @@
+# Uncomment this if you want to store the tfstate in Azure
+# terraform {
+#   backend "azurerm" {
+#     storage_account_name = "STORAGE_ACC_NAME" # The Storage account needs to be created in your Azure sub. in advance of running terraform init
+#     container_name       = "STORAGE_CONTAINER" # The Blob storage container needs creating in advance
+#     resource_group_name  = "RG_OF_STORAGE_ACC" # The resource group needs creating in advance
+#     key                  = "terraform.tfstate" # The state file for which environment this config is for e.g. prod.terraform.tfstate
+#     use_msi              = true # When authenticating using a Managed Service Identity (MSI), this line is needed
+#     subscription_id      = var.subscription_id
+#     tenant_id            = var.tenant_id
+#   }
+# }

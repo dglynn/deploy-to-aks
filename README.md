@@ -66,7 +66,7 @@ To deploy the AKS cluster to your own tenant you first need to [`cd aks-cluster`
      - You can open the `tfplan.log` file it creates to see the plan too
 1. If there are no errors and the plan is deploying the expected resources you can now run:
    - `terraform apply tfplan`
-1. There is an example of how to setup a remote backend store for the state file, if you would like to try that. There is some manual steps to carry out in advance first. When you open the [backend.tf](aks-cluster/backend.tf) it has all the necessary information.
+1. There is an example of how to setup a remote backend store for the state file, if you would like to try that. There is some manual steps to carry out in advance first. When you open the [backend.tf](aks-cluster/backend.tf.rename) it has all the necessary information.
 1. When the terraform apply has been completed it will output the aks config and public ip of the cluster:
    - Copy the aks config and run it: `az aks get-credentials --subscription your_sub_id_will_be_here --resource-group todo --name todo --overwrite-existing`
 1. To test access to the cluster, you can run `kubectl gets nodes`, this will prompt you to login using the rbac creds presented to you on the cmd line

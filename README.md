@@ -62,7 +62,7 @@ To deploy the AKS cluster to your own tenant you first need to [`cd aks-cluster`
 1. Once logged in return to the root of the [aks-cluster](aks-cluster) directory and run the following terraform commands:
    - `terraform init` - this initialises the modules, installs providers and remote backend terraform state storage
    - `terraform plan -no-color -out tfplan | tee tfplan.log`
-     - This will run the plan and output what wil lbe deployed in your azure subscription
+     - This will run the plan and output what will be deployed in your azure subscription
      - You can open the `tfplan.log` file it creates to see the plan too
 1. If there are no errors and the plan is deploying the expected resources you can now run:
    - `terraform apply tfplan`

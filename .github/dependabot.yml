@@ -5,7 +5,26 @@
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # Terraform dependencies
+  - package-ecosystem: "terraform"
+    directory: "/aks-cluster"
+    schedule:
+      interval: "weekly"
+
+  # Helm Chart dependencies
+  - package-ecosystem: "helm"
+    directory: "/helm"
+    schedule:
+      interval: "weekly"
+
+  # MongoDB dependencies (assuming it's using a Node.js driver or similar)
+  - package-ecosystem: "npm"
+    directory: "/mongodb"
+    schedule:
+      interval: "weekly"
+
+  # Node.js project dependencies
+  - package-ecosystem: "npm"
+    directory: "/node-todo"
     schedule:
       interval: "weekly"
